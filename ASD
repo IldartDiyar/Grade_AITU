@@ -1,0 +1,332 @@
+Week 10
+Problem 1001:
+#include <iostream> //input output library
+#include <cstring> //library for toupper strcmp
+using namespace std; //to use cin cout
+struct Train { //creating struct Train that will have id,location,time
+    int id;
+    char* location;
+    char* time;
+};  
+void caps(char* s) { //void function to make everything CAPS
+    for (int i = 0; *(s + i); i++) //to pass every element
+        *(s + i) = toupper(*(s + i)); //change to upperCase
+}
+int main() {
+    int n; //creating number of structures
+    cin >> n; //enter n
+    Train *train = new Train[n]; //dynamic array allocation
+    for (int i = 0; i < n; i++) {// pass until n
+        train[i].location = new char[1001]; //dynamic array allocation
+        train[i].time = new char[1001]; //dynamic array allocation
+        cin >> train[i].id>>train[i].location>>train[i].time; //enter values
+        caps(train[i].location); //make location upperCase
+    }
+    char destination[1001]; //create destination point
+    cin >> destination; //enter destination point
+    caps(destination); //make destination point CAPS
+    bool impossible = true; //boolean impossible true
+    for (int i = 0; i < n; i++) { //passing all elements structures
+        if (strcmp(destination, train[i].location) == 0) { //if there is no difference 
+            cout << train[i].id << '_' << train[i].location << '_' << train[i].time; //show information
+            impossible = false; //that says that it is possible to reach this point
+        }
+        delete[] train[i].location; //deallocate memory
+        delete[] train[i].time; //deallocate memory
+    }
+    if (impossible) //if it is impossible then show 
+        cout << "Impossible"; //impossible
+    delete[] train;//deallocate all info
+    return 0; 
+}
+
+Problem 1002:
+#include <iostream> //input output library
+#include <cstring> //library for toupper strcmp
+using namespace std; //to use cin cout
+struct Train { //creating struct Train that will have id,location,time
+    int id;
+    char* location;
+    char* time;
+};  
+void caps(char* s) { //void function to make everything CAPS
+    for (int i = 0; *(s + i); i++) //to pass every element
+        *(s + i) = toupper(*(s + i)); //change to upperCase
+}
+int convert(char *first){
+    int h = *first - '0' * 10 + *(first+1)-'0';
+    int m = *(first+3)-'0' * 10 + *(first+4)-'0';
+    return h*3600+m*60;
+}
+int main() {
+    int n,minpos=0,min = 9999999; //creating number of structures,minpos and min
+    cin >> n; //enter n
+    Train *train = new Train[n]; //dynamic array allocation
+    for (int i = 0; i < n; i++) { // pass until n
+        train[i].location = new char[1001]; //dynamic array allocation
+        train[i].time = new char[1001]; //dynamic array allocation
+        cin >> train[i].id>>train[i].location>>train[i].time; //enter values
+        caps(train[i].location); //make location upperCase
+    }
+    char destination[1001]; //create destination point
+    cin >> destination; //enter destination point
+    caps(destination); //make destination point CAPS
+    bool impossible = true; //boolean impossible true
+    for (int i = 0; i < n; i++) { //passing all elements structures
+        if (strcmp(destination, train[i].location) == 0) { //if there is no difference
+            int seconds = convert(train[i].time); //create seconds result of convert function
+            if(seconds<min){ //finding the best way
+                min = seconds; //finding the best way
+                minpos = i; //finding the best way
+            }
+            impossible = false; //that says that it is possible to reach this point
+        }
+    }
+    if (impossible) //if it is impossible then show 
+        cout << "Impossible"; //impossible
+    else cout << train[minpos].id << '_' << train[minpos].location << '_' << train[minpos].time; //output information
+    for(int i = 0; i <n; i++){ //for to deallocate everything
+        delete[] train[i].location; //deallocate memory
+        delete[] train[i].time; //deallocate memory
+    }
+    delete[] train; //deallocate memory
+    return 0;
+}
+
+Problem 1003:
+#include<iostream> //input output library
+using namespace std; //to use cin cout
+typedef char* CharPtr; //change name of char* to CharPtr
+struct Student{ //creating struct Student 
+    int ID;
+    CharPtr surname;
+    double grade;
+};
+void bubbleSort(Student a[], int n){
+    for(int i = 0; i<n; i++){ //bubble sort
+        for(int j = 0; j<n-i-1; j++){ // bubble sort
+            if(a[j].grade>a[j+1].grade) swap(a[j],a[j+1]); //last element will be max
+            if(a[j].grade==a[j+1].grade && a[j].ID<a[j+1].ID) swap(a[j],a[j+1]); // if same grade look by ID
+        }
+    }
+}
+int main(){
+    int n; //creating num of students
+    cin>>n; //enter value
+    Student *s = new Student[n]; //dynamic array allocation
+    for(int i = 0; i<n; i++){ //for loop to enter all values
+        s[i].surname = new char[100]; //dynamic array allocation
+        cin>>s[i].ID>>s[i].surname>>s[i].grade; //enter values
+    }
+    bubbleSort(s,n); //call bubbleSort
+    cout<<s[n-1].ID<<" "<<s[n-1].surname<<" "<<s[n-1].grade; 
+    for(int i = 0; i<n; i++){//for loop to deallocate memory
+        delete[] s[i].surname; //deallocate memory
+    }
+    delete[] s; //deallocate memory
+}
+
+Problem 1004:
+#include<iostream> //input output library
+using namespace std; //to use cin cout
+struct Student{ //creating struct Student 
+    int ID;
+    double grade;
+};
+void bubbleSort(Student a[], int n){
+    for(int i = 0; i<n; i++){ //bubble sort
+        for(int j = 0; j<n-i-1; j++){ //bubble sort
+            if(a[j].grade<a[j+1].grade) swap(a[j],a[j+1]); //last element will be max
+            if(a[j].grade==a[j+1].grade && a[j].ID>a[j+1].ID) swap(a[j],a[j+1]); // if same grade look by ID
+        }
+    }
+}
+int main(){
+    int n; //creating num of students
+    cin>>n; //enter value
+    Student *s = new Student[n]; //dynamic array allocation
+    for(int i = 0; i<n; i++){ //for loop to enter all values
+        cin>>s[i].ID>>s[i].grade; //enter values
+    }
+    bubbleSort(s,n); //call bubbleSort
+     for(int i = 0; i<n; i++){ //for loop to output all values
+        cout<<s[i].ID<<" "<<s[i].grade<<endl; //show values
+    }
+    delete[] s; //deallocate memory
+}
+
+Problem 1005:
+#include <iostream> //input output library
+using namespace std; //use cin cout
+
+struct Luggage { //creating struct Luggage
+ char *description;
+ int count;
+ double weight;
+};
+
+struct Passenger { //creating struct Passenger
+ int luggageSize;
+ char *name;
+ Luggage *luggage;
+};
+int main() {
+int nameID,luggageID,s;//two answers name and luggage
+int n; //passengers amount
+cin >> n;//enter amount
+double max=-1; //creating max 
+Passenger *p = new Passenger [n]; //dynamic array allocation
+for (int i=0; i< n; i++){ //fill all array
+  p[i].name =new char [n]; //dynamic array allocation
+  cin >> p[i].name >> p[i].luggageSize; //enter name and amount of luggage
+  s = p[i].luggageSize; //creating s amount of luggages
+  p[i].luggage = new Luggage[s]; //dynamic array allocation
+  for (int j=0; j<s;j++){ //enter information about luggage
+  p[i].luggage[j].description = new char [30]; //dynamic array allocation
+  cin >> p[i].luggage[j].description>>p[i].luggage[j].count>>p[i].luggage[j].weight; //enter values
+  if (p[i].luggage[j].weight>max){ //find name and luggage id
+        max=p[i].luggage[j].weight; //update max
+        nameID = i; //updane nameID 
+        luggageID = j; //update luggageID
+  }
+ 
+  } 
+}
+cout<<p[nameID].name<<endl;//show name who has highest weight of luggage 
+cout << p[nameID].luggage[luggageID].description; //show name of luggage that has highest weight
+for(int i = 0; i<n; i++){ //for loop to deallocate memory
+    delete[] p[i].name; //deallocation memory
+    delete[] p[i].luggage; //deallocation memory
+}
+for(int i = 0; i<n; i++){ //for loop to deallocate memory
+    for(int j = 0; j<s; j++){ //for loop to deallocate memory
+        delete[] p[i].luggage[j].description; //deallocation memory
+    }
+}
+delete [] p; //deallocate memory
+}
+
+Problem 1006:
+#include <iostream>//input output library
+using namespace std; //to use cin cout
+struct Train { //creating struct Train
+    int id;
+    char* fromAddress;
+    char* toAddress;
+    char* departureTime;
+};  
+void caps(char* s) { //void function to make everything CAPS
+    for (int i = 0; *(s + i); i++) //to pass every element
+        *(s + i) = toupper(*(s + i)); //change to upperCase
+}
+void sortByLetter(Train *a,int n){
+    for(int i = 0; i<n; i++){ //bubble sort
+        for(int j = 0; j<n-1; j++){ //bubble sort
+            string city1 =a[j].toAddress; //creating city1
+            string city2 = a[j+1].toAddress; //creating city2
+            if(city1>city2) swap(a[j],a[j+1]); //compare them and swap if it is necessary
+        }
+    }
+}
+int main() {
+    int n; //amount of trains
+    cin >> n; //enter amount of trains
+    Train *train = new Train[n]; //creating dynamic array
+    for (int i = 0; i < n; i++) {
+        train[i].fromAddress = new char[1001]; //creating dynamic array and allocate memory
+        train[i].toAddress = new char[1001]; //creating dynamic array and allocate memory
+        train[i].departureTime = new char[1001]; //creating dynamic array and allocate memory
+        cin >> train[i].id>>train[i].fromAddress>>train[i].toAddress>>train[i].departureTime; //enter values
+        caps(train[i].fromAddress); //make fromAddress CAPS
+        caps(train[i].toAddress); //make toAddress CAPS
+    }
+    sortByLetter(train,n); //call sort by letter function
+    for (int i = 0; i < n; i++) { //show sorted array
+        cout<<train[i].id<<" "<<train[i].fromAddress<<" "<<train[i].toAddress<<" "<<train[i].departureTime<<endl; //show information
+    }
+    for (int i = 0; i < n; i++){
+        delete[] train[i].fromAddress; //deallocation memory
+        delete[] train[i].toAddress; //deallocation memory
+        delete[] train[i].departureTime; //deallocation memory
+    }
+    delete[] train; //deallocation memory
+    return 0;
+}
+
+Problem 1010:
+#include<iostream>
+#include<string>
+#include<cstdio>
+using namespace std;
+int main(){
+    int counter0 = 0,counter1=0,counter2=0,counter3=0; //creating counters
+    char line[8][8]; //creating 2D array
+    string answer =""; //creating empty string
+    for(int i = 0; i < 8; i++){ //fill 2D array
+        for(int j = 0; j<8; j++){//fill 2D array
+            cin>>line[i][j]; //fill 2D array
+            if(line[i][j]=='0'){ //if element is 0
+                counter0++; //counter of zeros +1
+                answer+='-'; //add to answer '-'
+            }
+            if(line[i][j]=='1'){ //if element is 1
+                counter1++; //counter of ones +1
+                answer+='-'; //add to answer '-'
+            }
+            if(line[i][j]=='2'){ //if element is 2
+                counter2++; //counter of twos +1
+                answer+='2'; //add to answer '2'
+            }
+            if(line[i][j]=='3'){ //if element is 3
+                counter3++; //counter of threes +1
+                answer+='-'; //add to answer '-'
+            }
+        }
+    }
+
+    if(counter0==0||counter1==0||counter2==0||counter3==0){ //if one of the counters are zero
+         cout<<"BAD INPUT LIST"; //show BAD INPUT LIST
+         return 0;
+    }
+    int counter = 0; //create counter
+    for(int i =0; i<64; i++){ //go until 8^2
+         cout<<answer[i]; //show element of string
+         counter++; //update counter
+         if(counter==8){ //if counter is 8 we need to make new line
+            counter=0;//reset our counter
+            cout<<endl; //show new line
+         }   
+    }
+    cout<<endl;//make new line
+    cout<<counter0<<" "<<counter1<<" "<<counter2<<" "<<counter3; //show counters
+}
+
+Problem 1011:
+#include<string> //to use string.length()
+#include<iostream> //input output library
+using namespace std; //use cin cout
+int main(){
+   int counter = 0;
+   string a; //creating string a
+   cin>>a; //enter string
+   if(a[0]==')'||a[a.length()-1]=='('){ //special case not starting with ) and ending with (
+       cout<<"INVALID"; //show INVALID
+       return 0;//exit programm
+   }
+   for(int i=0; i<a.length(); i++){ //pass all string
+       if(a[i]=='(') counter++; //if element is ( update counter
+       if(a[i]==')'){ //if it is ) 
+           if(counter<=0){// if counter of ( less or equal to 0
+               cout<<"INVALID";//show INVALID
+               return 0; //exit programm
+           }
+           counter--; //if its not counter--
+       }
+   }
+   cout<<"VALID"; //show VALID
+   return 0;
+}
+ 
+ 
+
+
